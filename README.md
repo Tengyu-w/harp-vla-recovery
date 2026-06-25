@@ -2,6 +2,81 @@
 
 中文：面向 VLA 机器人策略的运行时不稳定性分析与选择性恢复
 
+Research code and public evidence for studying whether Vision-Language-Action (VLA) robotic policies can recognize runtime instability and selectively route recovery before execution failure becomes irreversible.
+
+The central question is not only whether a failed VLA rollout can be recovered. The main question is whether the robot can identify when execution is becoming unreliable, what kind of failure state it resembles, and whether it should continue, recover, demo-anchor, or request human review.
+
+> Research prototype only. This repository is not a deployed robot safety system and does not claim hardware-validated autonomy.
+
+## GitHub Reading Note
+
+This public repository is organized around the final GitHub interpretation of the project. The strongest current claim is not "VLA recovery always works." The stronger and more defensible claim is:
+
+> VLA execution instability can be observed through runtime evidence and routed into selective recovery decisions.
+
+Current interpretation:
+
+- HARP-VLA should be read as a runtime reliability layer, not only a recovery controller.
+- Runtime instability analysis is the evidence layer; the route classifier is the final decision head.
+- The committed metrics and figures validate the pipeline and visualization stack on a synthetic smoke run.
+- Real robot or simulator claims require logged rollout data, seed/task metadata, leakage checks, and intervention validation.
+
+## Application Entry
+
+Start here:
+
+1. [Full stage-ordered research report](docs/RESEARCH_REPORT.md)
+2. [Integrated Word report](reports/HARP_VLA_Upgraded_Full_Experiment_Report_2026-06-25_VOA_visual_upgrade.docx)
+3. [Route classifier metrics](outputs/recovery_route_classifier/metrics.json)
+4. [Route predictions and explanations](outputs/recovery_route_classifier/route_explanations.csv)
+5. [Recovery timing ablation](outputs/recovery_timing_ablation/summary.csv)
+6. [Visual diagnostic figures](outputs/voa_visual_upgrade_figures/)
+
+The intended application framing is trustworthy embodied AI and selective recovery for VLA robotic policies. It should not be described as a completed real-robot safety system.
+
+## Research Summary
+
+This repository contains a Python pipeline for execution-time reliability analysis, recovery route classification, timing ablation, and visual evidence generation for HARP-VLA.
+
+Key ideas:
+
+- embedding-space instability analysis, where execution windows are compared against success/recovery regions;
+- action-outcome residual analysis, where intended actions are compared against observed outcomes;
+- progress confirmation, so risk does not trigger unnecessary recovery while the task is still advancing;
+- failure-state retrieval, where current execution is compared against success, failure, and recovery evidence;
+- demo-anchored recovery, where demonstrations act as stabilizing priors rather than simple replay scripts;
+- selective fallback and calibration, where the system chooses among `continue`, `recover_light`, `recover_strong`, `demo_anchor`, and `human_review`;
+- recovery timing analysis, comparing immediate recovery, delayed recovery, and no recovery.
+
+For the full stage-ordered account, including the rationale for each experiment, public evidence, limitations, and next experiments, see [docs/RESEARCH_REPORT.md](docs/RESEARCH_REPORT.md).
+
+## Method And Evidence Chain
+
+The project follows a staged reliability workflow. Each stage asks one research question and produces public aggregate evidence.
+
+| Stage | Why this was done | Public evidence | Main finding |
+| --- | --- | --- | --- |
+| 1. Baseline recovery framing | Avoid overclaiming early tuned-controller success. | Integrated report and task0 evidence summary. | The project should not be presented as all failures solved; seed shift remains important. |
+| 2. Runtime instability features | Failure should be measured before the terminal state. | `execution_features.csv`, decision-flow figure. | Embedding distance, residual, progress, confidence, and risk create an interpretable evidence layer. |
+| 3. Embedding geometry | Check whether execution states occupy meaningful reliability regions. | PCA proxy figure. | Success, recovery, demo-anchor, and review states can be visualized in feature space. |
+| 4. Progress and residual analysis | Prevent recovery from firing on risk alone. | Residual-progress diagnostic figure. | High residual plus stalled progress is stronger evidence for intervention. |
+| 5. Failure-state retrieval | Different failures need different recovery evidence. | Risk-confidence figure, failure-neighbor ratio. | Retrieval confidence and local failure density support selective routing. |
+| 6. Route classification | Convert instability evidence into recovery decisions. | Confusion matrix, feature importance, route explanations. | The decision head validates the pipeline but is not the whole contribution. |
+| 7. Timing ablation | Recovery may become less useful if triggered too late. | Timing summary and heatmap. | Immediate recovery is strongest in the proxy analysis; delayed recovery loses recoverable cases. |
+| 8. Visual evidence package | Make the process inspectable without reading all code. | README figures and integrated Word report. | The project can be reviewed as a sequence of evidence, decisions, and limitations. |
+
+The central evidence chain is:
+
+```text
+VLA rollout
+  -> embedding / residual / progress / retrieval signals
+  -> runtime instability evidence
+  -> recovery route decision
+  -> continue / recover_light / recover_strong / demo_anchor / human_review
+```
+
+This is why the project is not presented as a simple VLA recovery script. The main research contribution is the analysis and routing of unreliable execution states.
+
 ## Runtime Instability Evidence at a Glance
 
 HARP-VLA is built around one central idea:
@@ -67,9 +142,6 @@ Interpretation:
 
 Evidence status: these committed figures validate the analysis and visualization pipeline. They should be replaced with real logged VOA/HARP rollout figures before making robot-performance claims.
 
-Full project report:
-
-- [`docs/RESEARCH_REPORT.md`](docs/RESEARCH_REPORT.md): complete research roadmap, stage-by-stage experiment logic, evidence, limitations, and next experiments.
 
 ## 1. Project Motivation
 
