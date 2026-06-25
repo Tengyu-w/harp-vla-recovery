@@ -2,6 +2,71 @@
 
 中文：面向 VLA 机器人策略的运行时不稳定性分析与选择性恢复
 
+## Runtime Instability Evidence at a Glance
+
+HARP-VLA is built around one central idea:
+
+> A VLA policy usually does not fail only at the final step. Failure often appears earlier as measurable runtime instability.
+
+The project therefore analyzes execution before selecting a recovery route. The route classifier is only the final decision module; the main evidence comes from instability signals such as embedding drift, action-outcome residual, progress stagnation, retrieval uncertainty, and proximity to historical failure states.
+
+```text
+rollout execution
+  -> embedding drift / residual / progress / retrieval signals
+  -> runtime instability evidence
+  -> recovery route classifier
+  -> continue / recover_light / recover_strong / demo_anchor / human_review
+```
+
+![Representation-guided recovery decision flow](outputs/voa_visual_upgrade_figures/fig10_decision_flow.png)
+
+### What the Instability Analysis Measures
+
+| Evidence signal | What it shows | Why it matters |
+| --- | --- | --- |
+| `embedding_distance` | Whether the current execution state is moving away from the success/recovery manifold | Detects drift before terminal failure |
+| `action_outcome_residual` | Whether the commanded action produced the expected observed outcome | Captures slip, contact failure, or ineffective action |
+| `progress_slope` | Whether task progress is still increasing or has stalled | Prevents unnecessary recovery when the task is still progressing |
+| `retrieval_confidence` | Whether retrieved recovery evidence matches the current state | Controls when retrieval-based recovery is trustworthy |
+| `failure_neighbor_ratio` | Whether the current state is close to historical failure states | Identifies failure-like regions in execution space |
+| `start_risk` / `risk_score` | How risky the current recovery window is | Gates strong recovery, demo anchoring, or human review |
+
+### Visual Evidence
+
+The following figures show how runtime instability is made visible and then routed into selective recovery decisions.
+
+| Execution representation | Risk and retrieval confidence |
+| --- | --- |
+| ![Execution representation PCA proxy](outputs/voa_visual_upgrade_figures/fig07_execution_manifold_proxy.png) | ![Risk gated retrieval confidence space](outputs/voa_visual_upgrade_figures/fig05_risk_confidence_space.png) |
+
+| Residual-progress diagnostic | Feature importance |
+| --- | --- |
+| ![Residual progress diagnostic space](outputs/voa_visual_upgrade_figures/fig06_residual_progress_space.png) | ![Route classifier feature importance](outputs/voa_visual_upgrade_figures/fig02_feature_importance.png) |
+
+| Recovery route distribution | Recovery timing ablation |
+| --- | --- |
+| ![Recovery route distribution](outputs/voa_visual_upgrade_figures/fig01_route_distribution.png) | ![Counterfactual recovery timing ablation](outputs/voa_visual_upgrade_figures/fig03_timing_ablation.png) |
+
+| Route confidence | Rollout trigger timeline |
+| --- | --- |
+| ![Predicted route confidence](outputs/voa_visual_upgrade_figures/fig08_route_confidence_histogram.png) | ![Example rollout trigger timeline](outputs/voa_visual_upgrade_figures/fig09_rollout_timeline.png) |
+
+| Route-level timing heatmap | Schematic diagnostic panels |
+| --- | --- |
+| ![Timing by route heatmap](outputs/voa_visual_upgrade_figures/fig04_timing_by_route_heatmap.png) | ![Simulation-style diagnostic panels](outputs/voa_visual_upgrade_figures/fig11_simulation_style_diagnostics.png) |
+
+Interpretation:
+
+- The PCA proxy visualizes how execution windows separate into success, recovery, demo-anchor, and human-review regions.
+- The risk-confidence plot shows when retrieval evidence is trusted and when the system should escalate.
+- The residual-progress plot shows why high residual plus stalled progress indicates stronger instability.
+- Feature importance shows which reliability signals drive the route classifier.
+- Timing ablation asks whether recovery must happen immediately or can be delayed.
+- Route confidence and rollout timeline plots show whether the classifier is decisive and where recovery triggers occur during an episode.
+- The schematic diagnostic panels are explanatory visuals only, not real simulator screenshots.
+
+Evidence status: these committed figures validate the analysis and visualization pipeline. They should be replaced with real logged VOA/HARP rollout figures before making robot-performance claims.
+
 ## 1. Project Motivation
 
 Vision-Language-Action (VLA) policies can execute complex robotic tasks from visual and language inputs, but their failures are often difficult to interpret. A rollout may look acceptable for many steps, then gradually drift, stall, miss contact, or enter a state where the original policy can no longer recover.
