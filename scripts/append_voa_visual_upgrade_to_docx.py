@@ -67,7 +67,7 @@ def add_page_break(doc: Document) -> None:
 
 
 def add_title(doc: Document) -> None:
-    h = doc.add_heading("2026-06-25 Addendum: Representation-Guided Recovery Visual Upgrade", level=1)
+    h = doc.add_heading("2026-06-25 Representation-Guided Recovery Visual Evidence", level=1)
     h.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p = doc.add_paragraph()
     r = p.add_run("中文：表征引导的 VLA/VOA 操作恢复与执行期可靠性层")
@@ -75,7 +75,7 @@ def add_title(doc: Document) -> None:
     r.font.size = Pt(11)
     r.font.color.rgb = RGBColor(46, 94, 140)
     doc.add_paragraph(
-        "This addendum integrates the 2026-06-25 VOA upgrade into the existing HARP-VLA report. "
+        "This section integrates the 2026-06-25 VOA reliability-layer evidence into the existing HARP-VLA report. "
         "The focus is visual evidence: route decisions, feature explanations, retrieval confidence, "
         "risk gating, timing ablations, and schematic execution diagnostics."
     )
@@ -202,7 +202,7 @@ def add_claims_and_limitations(doc: Document) -> None:
             [
                 "The upgraded VOA/HARP-VLA reliability layer runs end to end and produces structured metrics, predictions, explanations, timing tables, and visual outputs.",
                 "The method can present failure-aware execution decisions as interpretable plots rather than only text logs.",
-                "The Word report now contains a richer visual appendix suitable for supervisor review, PhD application discussion, or paper-planning material.",
+                "The Word report now contains a richer visual appendix suitable for supervisor review, PhD application discussion, or research planning.",
             ],
         ),
         (
