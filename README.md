@@ -63,7 +63,44 @@ The project studies four execution-time questions:
 
 These questions form the full HARP-VLA logic.
 
-## 4. Method Logic
+## 4. Role of Runtime Instability Analysis
+
+Runtime instability analysis is not just a classifier. It is the evidence layer that makes recovery decisions meaningful.
+
+The classifier only answers the final routing question:
+
+> Given the current evidence, which recovery route should be selected?
+
+The instability analysis answers the earlier and more important diagnostic questions:
+
+- Is the rollout moving away from normal successful execution?
+- Is the action producing the expected physical outcome?
+- Is task progress slowing down or stalled?
+- Is the current state close to historical success, historical failure, or an uncertain region?
+- Is the system still confident enough to recover autonomously?
+
+In HARP-VLA, instability is measured through runtime signals:
+
+- `embedding_distance`: distance from the success/recovery manifold
+- `action_outcome_residual`: mismatch between intended action and observed outcome
+- `progress_slope`: whether the task is still making progress
+- `retrieval_confidence`: confidence that retrieved evidence matches the current state
+- `failure_neighbor_ratio`: local density of historical failure states
+- `start_risk` / `risk_score`: estimated recovery risk
+
+The analysis pipeline is:
+
+```text
+rollout execution
+  -> embedding drift / residual / progress / retrieval signals
+  -> runtime instability evidence
+  -> recovery route classifier
+  -> continue / recover_light / recover_strong / demo_anchor / human_review
+```
+
+Therefore, the research contribution is not simply "classifying failures." The key contribution is making VLA execution instability visible, measurable, and actionable before the final failure state.
+
+## 5. Method Logic
 
 HARP-VLA is built as a five-layer reliability pipeline. Each layer solves a weakness in the previous layer.
 
@@ -160,7 +197,7 @@ The system should select among multiple recovery routes rather than using one fi
 **Role in the system.**  
 This layer turns instability analysis into an actionable execution-time decision.
 
-## 5. How the Layers Connect
+## 6. How the Layers Connect
 
 The project logic is sequential:
 
@@ -185,7 +222,7 @@ Each layer answers a different question:
 
 This is the main upgrade: HARP-VLA is no longer a single recovery trigger. It is a structured reliability layer.
 
-## 6. Current Evidence
+## 7. Current Evidence
 
 The current report uses a conservative evidence framing:
 
@@ -203,7 +240,7 @@ The more defensible claim is:
 
 > VLA execution instability can be observed, measured, and routed into selective recovery decisions.
 
-## 7. 2026-06-25 Upgrade
+## 8. 2026-06-25 Upgrade
 
 The latest upgrade adds a representation-guided recovery layer.
 
@@ -240,7 +277,7 @@ Outputs:
 - `demo_anchor`
 - `human_review`
 
-## 8. Recovery Route Interpretation
+## 9. Recovery Route Interpretation
 
 | Route | Meaning |
 | --- | --- |
@@ -250,7 +287,7 @@ Outputs:
 | `demo_anchor` | Retrieval confidence is low or learned recovery is unreliable, so demonstration evidence is used as a stabilizing prior. |
 | `human_review` | The visual state, goal state, or risk state is too uncertain for trusted automatic recovery. |
 
-## 9. Visual Diagnostics
+## 10. Visual Diagnostics
 
 The upgrade adds visual outputs so the project is easier to inspect and explain.
 
@@ -276,7 +313,7 @@ Key figures:
 
 Note: the simulation-style panels are schematic explanatory visuals, not real simulator screenshots.
 
-## 10. Repository Structure
+## 11. Repository Structure
 
 ```text
 configs/                         Experiment configuration
@@ -290,7 +327,7 @@ scripts/                         Run, validate, visualize, and assemble reports
 src/voa_recovery/                Core pipeline
 ```
 
-## 11. Run
+## 12. Run
 
 Synthetic smoke validation:
 
@@ -307,7 +344,7 @@ python scripts/run_voa_recovery_upgrade.py --input-rollouts path/to/voa_rollout_
 python scripts/generate_voa_visuals.py
 ```
 
-## 12. Current Smoke Metrics
+## 13. Current Smoke Metrics
 
 The committed smoke run validates the pipeline and visualization stack only.
 
@@ -318,7 +355,7 @@ The committed smoke run validates the pipeline and visualization stack only.
 
 These are not real robot performance claims. Real claims require logged rollout data, seed/task metadata, leakage checks, and simulator or hardware validation.
 
-## 13. Project Positioning
+## 14. Project Positioning
 
 HARP-VLA is a runtime reliability layer for VLA robotic policies.
 
