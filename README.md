@@ -67,6 +67,10 @@ Interpretation:
 
 Evidence status: these committed figures validate the analysis and visualization pipeline. They should be replaced with real logged VOA/HARP rollout figures before making robot-performance claims.
 
+Full project report:
+
+- [`docs/RESEARCH_REPORT.md`](docs/RESEARCH_REPORT.md): complete research roadmap, stage-by-stage experiment logic, evidence, limitations, and next experiments.
+
 ## 1. Project Motivation
 
 Vision-Language-Action (VLA) policies can execute complex robotic tasks from visual and language inputs, but their failures are often difficult to interpret. A rollout may look acceptable for many steps, then gradually drift, stall, miss contact, or enter a state where the original policy can no longer recover.
