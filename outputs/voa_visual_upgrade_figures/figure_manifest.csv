@@ -1,0 +1,12 @@
+file,caption,metrics_run_label
+fig01_route_distribution.png,Route distribution across synthetic smoke execution windows.,voa_synthetic_smoke
+fig02_feature_importance.png,Feature importance for the recovery route classifier.,voa_synthetic_smoke
+fig03_timing_ablation.png,Counterfactual recovery timing comparison.,voa_synthetic_smoke
+fig04_timing_by_route_heatmap.png,Timing sensitivity broken down by route.,voa_synthetic_smoke
+fig05_risk_confidence_space.png,Risk-gated retrieval confidence space.,voa_synthetic_smoke
+fig06_residual_progress_space.png,Action-outcome residual versus progress slope.,voa_synthetic_smoke
+fig07_execution_manifold_proxy.png,PCA proxy of the execution representation space.,voa_synthetic_smoke
+fig08_route_confidence_histogram.png,Predicted route confidence distribution.,voa_synthetic_smoke
+fig09_rollout_timeline.png,Example rollout trigger timeline.,voa_synthetic_smoke
+fig10_decision_flow.png,Representation-guided recovery decision flow.,voa_synthetic_smoke
+fig11_simulation_style_diagnostics.png,Schematic diagnostic panels; not real simulator screenshots.,voa_synthetic_smoke

@@ -1,0 +1,152 @@
+﻿{
+  "run_label": "voa_synthetic_smoke",
+  "generated_on": "2026-06-25",
+  "dataset_mode": "synthetic_smoke_run",
+  "n_episodes": 360,
+  "n_train": 252,
+  "n_test": 108,
+  "features": [
+    "embedding_distance",
+    "failure_neighbor_ratio",
+    "progress_slope",
+    "action_outcome_residual",
+    "retrieval_confidence",
+    "start_risk"
+  ],
+  "extracted_features": [
+    "policy_embedding_norm",
+    "action_embedding_norm",
+    "state_embedding_norm",
+    "action_outcome_residual",
+    "progress_slope",
+    "retrieval_distance",
+    "retrieval_confidence",
+    "risk_score"
+  ],
+  "labels": [
+    "continue",
+    "recover_light",
+    "recover_strong",
+    "demo_anchor",
+    "human_review"
+  ],
+  "status_distribution": {
+    "anchored_recovery_success": 60,
+    "clean_success": 60,
+    "human_review_needed": 60,
+    "learned_recovery_failure": 60,
+    "learned_recovery_success": 60,
+    "natural_failure": 60
+  },
+  "route_distribution": {
+    "continue": 60,
+    "demo_anchor": 65,
+    "human_review": 118,
+    "recover_light": 59,
+    "recover_strong": 58
+  },
+  "accuracy": 0.9444444444444444,
+  "macro_f1": 0.9432246892201126,
+  "per_class": {
+    "continue": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 18.0
+    },
+    "recover_light": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 18.0
+    },
+    "recover_strong": {
+      "precision": 0.8,
+      "recall": 0.9411764705882353,
+      "f1-score": 0.8648648648648649,
+      "support": 17.0
+    },
+    "demo_anchor": {
+      "precision": 0.9444444444444444,
+      "recall": 0.85,
+      "f1-score": 0.8947368421052632,
+      "support": 20.0
+    },
+    "human_review": {
+      "precision": 0.9705882352941176,
+      "recall": 0.9428571428571428,
+      "f1-score": 0.9565217391304348,
+      "support": 35.0
+    },
+    "accuracy": 0.9444444444444444,
+    "macro avg": {
+      "precision": 0.9430065359477124,
+      "recall": 0.9468067226890756,
+      "f1-score": 0.9432246892201126,
+      "support": 108.0
+    },
+    "weighted avg": {
+      "precision": 0.9486988622609538,
+      "recall": 0.9444444444444444,
+      "f1-score": 0.9451453742071592,
+      "support": 108.0
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "continue",
+      "recover_light",
+      "recover_strong",
+      "demo_anchor",
+      "human_review"
+    ],
+    "matrix": [
+      [
+        18,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        18,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        17,
+        1
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        33
+      ]
+    ]
+  },
+  "missed_manual_or_anchor_rate": 0.07272727272727272,
+  "false_manual_or_anchor_rate": 0.018867924528301886,
+  "decision_outputs": [
+    "continue",
+    "recover_light",
+    "recover_strong",
+    "demo_anchor",
+    "human_review"
+  ],
+  "feature_derivation_notes": [],
+  "evidence_note": "Synthetic smoke metrics validate the pipeline only. Replace the input table with real VOA rollouts before making empirical claims."
+}

@@ -1,0 +1,7 @@
+feature,importance,rank,interpretation
+retrieval_confidence,0.22268679655232582,1,Confidence that retrieval evidence matches the current state.
+progress_slope,0.17136239927114427,2,Recent task-progress trend; low slope means stalled execution.
+action_outcome_residual,0.16824095783642398,3,Mismatch between intended action and observed outcome.
+failure_neighbor_ratio,0.16530848924080957,4,Local density of historical failure neighbors.
+start_risk,0.15059440717366018,5,Risk estimate at the beginning of the recovery decision window.
+embedding_distance,0.12180694992563604,6,Distance from retrieved success/recovery manifold.

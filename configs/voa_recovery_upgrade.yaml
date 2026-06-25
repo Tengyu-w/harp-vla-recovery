@@ -1,0 +1,84 @@
+﻿project:
+  name: voa-representation-guided-recovery
+  title: Execution-Time Reliability Layer for VOA Manipulation
+  chinese_title: 面向VOA操作的执行期可靠性层
+  framing: RAM makes the robot spatially aware before execution; HARP-VLA makes the robot failure-aware during execution.
+
+data:
+  input_rollouts: null
+  synthetic_smoke_run: true
+  random_seed: 46
+  n_synthetic_episodes: 360
+  test_size: 0.30
+
+labels:
+  execution_status:
+    - clean_success
+    - natural_failure
+    - learned_recovery_success
+    - learned_recovery_failure
+    - anchored_recovery_success
+    - human_review_needed
+  recovery_routes:
+    - continue
+    - recover_light
+    - recover_strong
+    - demo_anchor
+    - human_review
+
+features:
+  extracted_execution_features:
+    - policy_embedding_norm
+    - action_embedding_norm
+    - state_embedding_norm
+    - action_outcome_residual
+    - progress_slope
+    - retrieval_distance
+    - retrieval_confidence
+    - risk_score
+  route_classifier_inputs:
+    - embedding_distance
+    - failure_neighbor_ratio
+    - progress_slope
+    - action_outcome_residual
+    - retrieval_confidence
+    - start_risk
+  derivable_raw_columns:
+    - policy_embedding
+    - action_embedding
+    - state_embedding
+    - retrieved_success_embedding
+    - intended_action
+    - observed_action
+    - observed_delta
+    - progress_history
+    - progress_start
+    - progress_end
+    - failure_neighbor_count
+    - success_neighbor_count
+    - retrieval_distance
+    - success_retrieval_distance
+    - failure_retrieval_distance
+    - risk_score
+    - risk_score_start
+    - initial_risk
+
+safety:
+  manual_or_anchor_routes:
+    - demo_anchor
+    - human_review
+  high_risk_threshold: 0.72
+  low_confidence_threshold: 0.38
+  hardware_execution: disabled
+
+timing_ablation:
+  policies:
+    - immediate_recovery
+    - delay_10_steps
+    - delay_40_steps
+    - no_recovery
+
+outputs:
+  route_classifier_dir: outputs/recovery_route_classifier
+  timing_ablation_dir: outputs/recovery_timing_ablation
+  report_path: reports/representation_guided_recovery_report.md

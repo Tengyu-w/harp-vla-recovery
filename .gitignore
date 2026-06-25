@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+Thumbs.db
+
+# Local scratch and render QA intermediates
+docx_visual_upgrade_work/
+docx_upgrade_work/
+rendered/
+rendered_word/
+*.tmp
+
+# Keep final report artifacts, but avoid office lock files.
+~$*.docx
+~$*.xlsx
+~$*.pptx
